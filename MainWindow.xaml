@@ -1,0 +1,20 @@
+﻿<Window x:Class="DogBreeds.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DogBreeds"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="900" Width="1500
+        " ResizeMode="NoResize" WindowState="Maximized">
+    <StackPanel Orientation="Horizontal" Background="Beige">
+        <StackPanel MinWidth="750" MinHeight="450" Background="Aqua">
+            <Image x:Name="imgPicture" Width="150" Height="150" Margin="0,75,0,0"/>
+            <Button x:Name="btnPredict" Height="40" Width="100" Content="Predict" Margin="0,40,0,0" Click="btnPredict_Click" />
+            <DataGrid x:Name="theGrid" Height="150" Width="600" Margin="25,40,25,0">
+            </DataGrid>
+        </StackPanel>
+        <StackPanel MinWidth="750" MinHeight="450" Background="DarkViolet">
+        </StackPanel>
+    </StackPanel>
+</Window>

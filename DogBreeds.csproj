@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Breeds_of_DogsML.Model\**" />
+    <EmbeddedResource Remove="Breeds_of_DogsML.Model\**" />
+    <None Remove="Breeds_of_DogsML.Model\**" />
+    <Page Remove="Breeds_of_DogsML.Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ML" Version="1.4.0" />
+    <PackageReference Include="Microsoft.ML.ImageAnalytics" Version="1.4.0" />
+    <PackageReference Include="Microsoft.ML.TensorFlow" Version="1.4.0" />
+    <PackageReference Include="Microsoft.ML.Vision" Version="1.4.0" />
+    <PackageReference Include="OxyPlot.Wpf" Version="2.0.0" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="1.15.0" />
+  </ItemGroup>
+
+</Project>
