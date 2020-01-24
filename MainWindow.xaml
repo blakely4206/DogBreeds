@@ -3,30 +3,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
-        xmlns:local="clr-namespace:DogBreeds"
+        xmlns:local="clr-namespace:DogBreeds" xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="900" Width="1500
         " ResizeMode="NoResize" WindowState="Maximized">
-    <StackPanel Orientation="Horizontal" Background="Beige">
-        <StackPanel MinWidth="750" MinHeight="450" Background="Aqua">
-            <Image x:Name="imgPicture" Width="150" Height="150" Margin="0,75,0,0"/>
-            <Button x:Name="btnPredict" Height="40" Width="100" Content="Predict" Margin="0,40,0,0" Click="btnPredict_Click" />
-            <DataGrid x:Name="theGrid" Height="150" Width="600" Margin="25,40,25,0">
-            </DataGrid>
-            <UserControl Margin="0,80,0,0" Height="200" Width="250" Grid.ColumnSpan="2" Grid.Column="3">
-                <UserControl.DataContext>
-                    <oxy:PlotView Model="{Binding Bar}"/>
-                </UserControl.DataContext>
-                <oxy:Plot Title="Bar series (XAML)" LegendPlacement="Outside" Name="bar_graph_plot" LegendPosition="RightTop" LegendOrientation="Vertical"/>
-            </UserControl>
-        </StackPanel>
-        <StackPanel MinWidth="750" MinHeight="450" Background="DarkViolet">
-            <UserControl Margin="84,192,56,349" Height="275" Width="350">
-                <UserControl.DataContext>
-                    <oxy:ScatterSeries Height="250" Width="300" Name="scatter_plot"/>
-                </UserControl.DataContext>
-            </UserControl>
-        </StackPanel>
+    <StackPanel>
+        <Border BorderThickness="1" BorderBrush="Bisque"  Width="150" Height="150">
+            <Image x:Name="imgPicture" Width="150" Height="150"/>
+        </Border>
+        <Button x:Name="btnPredict" Height="40" Width="100" Content="Predict" Click="btnPredict_Click"/>
+        <DataGrid x:Name="theGrid" Height="90" />
+
+        <TabControl Height="518">
+            <TabItem Header="Breed Probability">
+                <oxy:Plot>
+                    <oxy:PieSeries
+                    InnerDiameter="0.2"
+                    ExplodedDistance="0"
+                    Stroke="Black" StrokeThickness="1"
+                    StartAngle="0" AngleSpan="360"
+                    ItemsSource="{Binding DogPredict}"
+                    LabelField="Breed_Name" ValueField="doubleProbability" IsExplodedField="IsExploded" />
+                </oxy:Plot>
+            </TabItem>
+            <TabItem>
+                <oxy:PlotView Model="{Binding ScatterModel}"/>
+            </TabItem>
+        </TabControl>
+        
     </StackPanel>
 </Window>

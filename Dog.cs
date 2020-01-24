@@ -4,10 +4,10 @@ using System.Text;
 
 namespace DogBreeds
 {
-    class Dog
+    public class Dog
     {
         Breed Breed { get; }
-        double doubleProbability { get; }
+        public double doubleProbability { get; }
         public string Breed_Name
         {
             get
