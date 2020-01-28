@@ -8,9 +8,20 @@ namespace DogBreeds
     public class HistoricalFileReader
     {
         public List<Plot> plots = new List<Plot>();
+        public List<BarColumn> columns = new List<BarColumn>();
         DateTime first = new DateTime();
 
         public HistoricalFileReader()
+        {
+            Read();
+        }
+
+        public DateTime getFirstDate()
+        {
+            return first;
+        }
+
+        public void Read()
         {
             int i = 0;
             double d = 0;
@@ -24,7 +35,7 @@ namespace DogBreeds
                 {
                     string[] parts = line.Split(',');
 
-                    if(i == 0)
+                    if (i == 0)
                     {
                         first = Convert.ToDateTime(parts[0]);
                     }
@@ -33,15 +44,21 @@ namespace DogBreeds
                     d = Convert.ToDouble(parts[2].TrimEnd('%'));
                     plots.Add(new Plot(d, date));
 
+                    string breed = BreedList.Return_Breed(parts[1]).breed_name;
+
+                    if(columns.Exists(x => x.breedLabel == breed))
+                    {
+                        columns.Find(x => x.breedLabel == breed).breedFreq += 1;
+                    }
+                    else
+                    {
+                        columns.Add(new BarColumn(breed));
+                    }
+                    
                     i++;
                 }
                 reader.Close();
             }
-        }
-
-        public DateTime getFirstDate()
-        {
-            return first;
         }
     }
 

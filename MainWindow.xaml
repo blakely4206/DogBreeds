@@ -5,31 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DogBreeds" xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1500
+        Title="Dog Breed Prediction" Height="900" Width="1500
         " ResizeMode="NoResize" WindowState="Maximized">
     <StackPanel>
         <Border BorderThickness="1" BorderBrush="Bisque"  Width="150" Height="150">
             <Image x:Name="imgPicture" Width="150" Height="150"/>
         </Border>
         <Button x:Name="btnPredict" Height="40" Width="100" Content="Predict" Click="btnPredict_Click"/>
-        <DataGrid x:Name="theGrid" Height="90" />
-
+        <DataGrid x:Name="theGrid" Height="90"/>
         <TabControl Height="518">
             <TabItem Header="Breed Probability">
                 <oxy:Plot>
                     <oxy:PieSeries
-                    InnerDiameter="0.2"
+                    InnerDiameter="0"
                     ExplodedDistance="0"
                     Stroke="Black" StrokeThickness="1"
                     StartAngle="0" AngleSpan="360"
                     ItemsSource="{Binding DogPredict}"
-                    LabelField="Breed_Name" ValueField="doubleProbability" IsExplodedField="IsExploded" />
+                    LabelField="Breed_Name" ValueField="doubleProbability"/>
                 </oxy:Plot>
             </TabItem>
-            <TabItem>
+            <TabItem Header="Historical">
                 <oxy:PlotView Model="{Binding ScatterModel}"/>
             </TabItem>
+            <TabItem Header="Common Breeds">
+                <oxy:PlotView Model="{Binding BarModel}"/>
+            </TabItem>
         </TabControl>
-        
     </StackPanel>
 </Window>
