@@ -22,5 +22,22 @@ namespace DogBreeds
             }
             return filename;
         }
+
+        public static string returnModelZip_filename()
+        {
+            string filename = "";
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            dlg.DefaultExt = ".zip";
+            dlg.Filter = "Zip Folder (*.zip)|*.zip";
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                filename = dlg.FileName;
+            }
+            return filename;
+        }
     }
 }

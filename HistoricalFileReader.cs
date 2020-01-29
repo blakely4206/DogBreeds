@@ -44,20 +44,23 @@ namespace DogBreeds
                     d = Convert.ToDouble(parts[2].TrimEnd('%'));
                     plots.Add(new Plot(d, date));
 
-                    string breed = BreedList.Return_Breed(parts[1]).breed_name;
-
-                    if(columns.Exists(x => x.breedLabel == breed))
-                    {
-                        columns.Find(x => x.breedLabel == breed).breedFreq += 1;
-                    }
-                    else
-                    {
-                        columns.Add(new BarColumn(breed));
-                    }
-                    
+                    InsertIntoColumnsList(BreedList.Return_Breed(parts[1]).breed_name);
+                                        
                     i++;
                 }
                 reader.Close();
+            }
+        }
+
+        public void InsertIntoColumnsList(string breed)
+        {
+            if (columns.Exists(x => x.breedLabel == breed))
+            {
+                columns.Find(x => x.breedLabel == breed).breedFreq += 1;
+            }
+            else
+            {
+                columns.Add(new BarColumn(breed));
             }
         }
     }

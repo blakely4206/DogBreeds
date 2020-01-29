@@ -10,22 +10,33 @@ namespace DogBreeds
 {
     public class ConsumeModel
     {
-        // For more info on consuming ML.NET models, visit https://aka.ms/model-builder-consume
-        // Method for consuming model in your app
         public static ModelOutput Predict(ModelInput input)
         {
 
-            // Create new MLContext
+            string modelPath;
             MLContext mlContext = new MLContext();
 
-            // Load model & create prediction engine
-            string modelPath = AppDomain.CurrentDomain.BaseDirectory + "MLModel.zip";
-            ITransformer mlModel = mlContext.Model.Load(modelPath, out var modelInputSchema);
-            var predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
+            try
+            {
+                modelPath = AppDomain.CurrentDomain.BaseDirectory + "MLModel.zip";
+                ITransformer mlModel = mlContext.Model.Load(modelPath, out var modelInputSchema);
+                var predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
 
-            // Use model to make prediction on input data
-            ModelOutput result = predEngine.Predict(input);
-            return result;
+                ModelOutput result = predEngine.Predict(input);
+                return result;
+            }
+            catch (Exception e)
+            {
+                System.Windows.MessageBox.Show("Model.zip file missing. Please choose another.", "Missing Model File", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                modelPath = FileNameGetter.returnModelZip_filename();
+
+                ITransformer mlModel = mlContext.Model.Load(modelPath, out var modelInputSchema);
+                var predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
+
+                ModelOutput result = predEngine.Predict(input);
+                return result;
+
+            }
         }
     }
 }

@@ -5,32 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DogBreeds" xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="Dog Breed Prediction" Height="900" Width="1500
-        " ResizeMode="NoResize" WindowState="Maximized">
-    <StackPanel>
-        <Border BorderThickness="1" BorderBrush="Bisque"  Width="150" Height="150">
-            <Image x:Name="imgPicture" Width="150" Height="150"/>
+        Title="Dog Breed Prediction" Height="1000" Width="1500
+        " ResizeMode="CanResize" WindowState="Normal">
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="Black"/>
+            <GradientStop Color="White" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="300" />
+            <RowDefinition Height="300" />
+            <RowDefinition Height="200" />
+        </Grid.RowDefinitions>
+        <Image  Grid.Column="0" Grid.Row="0" Source="anderson_logo.png" Height="50" Margin="-500,-10,0,0">
+            <Image.OpacityMask>
+                <ImageBrush/>
+            </Image.OpacityMask>
+        </Image>
+        <Label Grid.Column="0" Foreground="White" Grid.Row="0" FontSize="24" Margin="225,20,0,0" Content="Dog Breed Prediction Application" FontFamily="Cambria Math"/>
+        <Border BorderThickness="1"  Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="30,0,0,30" BorderBrush="White" Background="#FF1F1E1E" >
+            <Image x:Name="imgPicture" Source="paw.jpg" Margin="-300,-200,0,0" Width="150" Height="150"/>
         </Border>
-        <Button x:Name="btnPredict" Height="40" Width="100" Content="Predict" Click="btnPredict_Click"/>
-        <DataGrid x:Name="theGrid" Height="90"/>
-        <TabControl Height="518">
-            <TabItem Header="Breed Probability">
-                <oxy:Plot>
-                    <oxy:PieSeries
+        <Button x:Name="btnPredict" Width="100" Height="50" Content="Predict" Grid.Column="0" Grid.Row="1" Margin="150,0,0,0"  Click="btnPredict_Click" />
+        <DataGrid x:Name="theGrid" Margin="50,-100,0,0" Background="{x:Null}" Grid.Column="0" Grid.Row="2" ItemsSource="{Binding DogPredict}" HorizontalAlignment="Left" Height="100" Width="250" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="theGridBreedColumn" Binding="{Binding Breed_Name}" Header="Breed" Width="Auto"/>
+                <DataGridTextColumn x:Name="theGridProbColumn" Binding="{Binding Probability}" Width="*" Header="Prob"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <oxy:Plot Height="205" Width="300" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.Row="2" Margin="250,-55,0,0">
+            <oxy:PieSeries
+                    Name="thePie"
                     InnerDiameter="0"
+                    InsideLabelFormat=""
                     ExplodedDistance="0"
                     Stroke="Black" StrokeThickness="1"
                     StartAngle="0" AngleSpan="360"
                     ItemsSource="{Binding DogPredict}"
                     LabelField="Breed_Name" ValueField="doubleProbability"/>
-                </oxy:Plot>
-            </TabItem>
-            <TabItem Header="Historical">
-                <oxy:PlotView Model="{Binding ScatterModel}"/>
-            </TabItem>
-            <TabItem Header="Common Breeds">
-                <oxy:PlotView Model="{Binding BarModel}"/>
-            </TabItem>
-        </TabControl>
-    </StackPanel>
+        </oxy:Plot>
+        <Border Grid.Row="3" Grid.ColumnSpan="2" BorderThickness="1" Margin="30,0,30,0" BorderBrush="Black" >
+            <oxy:PlotView Model="{Binding ScatterModel}" Grid.Row="3"  Grid.ColumnSpan="2"/>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="1" BorderThickness="1" Margin="30,0,30,30" BorderBrush="Black" >
+            <oxy:PlotView Model="{Binding BarModel}" Grid.Row="3"  Grid.ColumnSpan="2" Margin="0,0,0,0"/>
+        </Border>
+    </Grid>
 </Window>

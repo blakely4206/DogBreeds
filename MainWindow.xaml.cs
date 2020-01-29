@@ -32,8 +32,8 @@ namespace DogBreeds
         public MainWindow()
         {
             hfr.Read();
-
-            DogPlots = new ObservableCollection<Plot>(hfr.plots);
+            
+            DogPlots = new ObservableCollection<Plot>();
             DogPredict = new ObservableCollection<Dog>();
             CurrentBreeds = new ObservableCollection<BarColumn>(hfr.columns);
 
@@ -43,6 +43,8 @@ namespace DogBreeds
             this.ScatterModel = scatterChart();
 
             this.DataContext = this;
+
+            theGrid.Visibility = Visibility.Hidden;
         }
 
         public PlotModel BarModel { get; set; }
@@ -50,24 +52,37 @@ namespace DogBreeds
 
         private PlotModel barChart()
         {
-            var plotModel = new PlotModel { Title = "Breeds of the Week" };
+            var plotModel = new PlotModel {
+                Title = "Breeds of the Week",
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal
+            };
 
             var barSeries = new OxyPlot.Series.BarSeries
             {
-                
+                LabelPlacement = LabelPlacement.Inside,
+                ItemsSource = CurrentBreeds,
+                ValueField = "breedFreq",
+                FillColor = OxyColors.Black,
+                LabelFormatString = "{0:.00}%"
             };
-
-            barSeries.ItemsSource = CurrentBreeds;
+            
             plotModel.Series.Add(barSeries);
 
+
+
+            plotModel.Axes.Add(new OxyPlot.Axes.CategoryAxis { Position = AxisPosition.Left, ItemsSource = CurrentBreeds, LabelField = "breedLabel" });
+            plotModel.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0, AbsoluteMinimum = 0});
+            
             return plotModel;
         }
 
         private PlotModel scatterChart()
-        {
+        {            
             DogPlots = new ObservableCollection<Plot>(hfr.plots);
-            var tmp = new PlotModel { Title = "Predictions over Time"};
-            tmp.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Key = "ColorAxis", Palette = OxyPalettes.Jet(30), Minimum = 0.0, Maximum = 1.0 });
+            var tmp = new PlotModel { Title = "Predictions Probabilities over Time"};
+            tmp.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Key = "ColorAxis", Palette = OxyPalettes.Jet(30), Minimum = 0.0, Maximum = 100.0 });
             
             var startDate = DateTime.Now.AddDays(-7);
             var endDate = DateTime.Now;
@@ -90,12 +105,12 @@ namespace DogBreeds
             s1.DataFieldX = "when";
             s1.DataFieldY = "probability";
             tmp.Series.Add(s1);
-            
             return tmp;
         }
 
         private void btnPredict_Click(object sender, RoutedEventArgs e)
         {
+            DogPredict.Clear();
             var input = new ModelInput();
             string path = FileNameGetter.return_filename();
 
@@ -114,9 +129,14 @@ namespace DogBreeds
                 DogPredict.Add(d);
             }
 
-            theGrid.ItemsSource = DogPredict.Select(x => new { theGridColumn1 = x.Breed_Name, theGridColumn2 = x.Probability });
-            theGrid.Columns[0].Header = "Breed";
-            theGrid.Columns[1].Header = "Probability";
+            theGrid.Visibility = Visibility.Visible;
+            theGrid.Columns[2].Visibility = Visibility.Hidden;
+            theGrid.Columns[3].Visibility = Visibility.Hidden;
+            theGrid.Columns[4].Visibility = Visibility.Hidden;
+
+
+            hfr.InsertIntoColumnsList(p.dogList[0].Breed_Name);
+            CurrentBreeds = new ObservableCollection<BarColumn>(hfr.columns);
         }      
     }
 }
