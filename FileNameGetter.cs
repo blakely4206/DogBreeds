@@ -39,5 +39,26 @@ namespace DogBreeds
             }
             return filename;
         }
+
+        public static string returnCSV_filename()
+        {
+            string filename = "";
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            dlg.DefaultExt = ".zip";
+            dlg.Filter = ".CSV (*.csv)|*.csv";
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                filename = dlg.FileName;
+            }
+            else
+            {
+                System.Environment.Exit(0);
+            }
+            return filename;
+        }
     }
 }

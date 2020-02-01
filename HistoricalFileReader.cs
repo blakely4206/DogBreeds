@@ -27,30 +27,40 @@ namespace DogBreeds
             double d = 0;
             DateTime date;
             string path = AppDomain.CurrentDomain.BaseDirectory + "Dogs.csv";
-
-            using (StreamReader reader = new StreamReader(path))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+            
+                if (File.Exists(path))
                 {
-                    string[] parts = line.Split(',');
-
-                    if (i == 0)
+                    using (StreamReader reader = new StreamReader(path))
                     {
-                        first = Convert.ToDateTime(parts[0]);
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            string[] parts = line.Split(',');
+
+                            if (i == 0)
+                            {
+                                first = Convert.ToDateTime(parts[0]);
+                            }
+
+                            date = Convert.ToDateTime(parts[0]);
+                            d = Convert.ToDouble(parts[2].TrimEnd('%'));
+                            plots.Add(new Plot(d, date));
+
+                            InsertIntoColumnsList(BreedList.Return_Breed(parts[1]).breed_name);
+
+                            i++;
+                        }
+                        reader.Close();
                     }
-
-                    date = Convert.ToDateTime(parts[0]);
-                    d = Convert.ToDouble(parts[2].TrimEnd('%'));
-                    plots.Add(new Plot(d, date));
-
-                    InsertIntoColumnsList(BreedList.Return_Breed(parts[1]).breed_name);
-                                        
-                    i++;
                 }
-                reader.Close();
-            }
+                else
+                {
+                    var x = File.Create(path);
+                    x.Close();
+                }
+            
         }
+
 
         public void InsertIntoColumnsList(string breed)
         {

@@ -24,14 +24,9 @@
             <RowDefinition Height="300" />
             <RowDefinition Height="200" />
         </Grid.RowDefinitions>
-        <Image  Grid.Column="0" Grid.Row="0" Source="anderson_logo.png" Height="50" Margin="-500,-10,0,0">
-            <Image.OpacityMask>
-                <ImageBrush/>
-            </Image.OpacityMask>
-        </Image>
         <Label Grid.Column="0" Foreground="White" Grid.Row="0" FontSize="24" Margin="225,20,0,0" Content="Dog Breed Prediction Application" FontFamily="Cambria Math"/>
         <Border BorderThickness="1"  Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="30,0,0,30" BorderBrush="White" Background="#FF1F1E1E" >
-            <Image x:Name="imgPicture" Source="paw.jpg" Margin="-300,-200,0,0" Width="150" Height="150"/>
+            <Image x:Name="imgPicture" Margin="-300,-200,0,0" Width="150" Height="150"/>
         </Border>
         <Button x:Name="btnPredict" Width="100" Height="50" Content="Predict" Grid.Column="0" Grid.Row="1" Margin="150,0,0,0"  Click="btnPredict_Click" />
         <DataGrid x:Name="theGrid" Margin="50,-100,0,0" Background="{x:Null}" Grid.Column="0" Grid.Row="2" ItemsSource="{Binding DogPredict}" HorizontalAlignment="Left" Height="100" Width="250" IsReadOnly="True">
@@ -52,10 +47,56 @@
                     LabelField="Breed_Name" ValueField="doubleProbability"/>
         </oxy:Plot>
         <Border Grid.Row="3" Grid.ColumnSpan="2" BorderThickness="1" Margin="30,0,30,0" BorderBrush="Black" >
-            <oxy:PlotView Model="{Binding ScatterModel}" Grid.Row="3"  Grid.ColumnSpan="2"/>
+            <oxy:Plot BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.Row="2">
+                <oxy:Plot.Series>
+                    <oxy:ScatterSeries
+                    ItemsSource="{Binding DogPlots}"
+                    DataFieldX="when"
+                    DataFieldY="probability"
+                    MarkerType="Circle"
+                    MarkerSize="2.5"
+                    MarkerFill="Black"/>
+                </oxy:Plot.Series>
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis
+                    Position="Left"
+                    Minimum="0"
+                    MajorGridlineColor="Red"
+                    MajorGridlineStyle="Solid"
+                    MinorGridlineColor="LightGray"
+                    MinorGridlineStyle="Dash"
+                    Maximum="100"/>
+                    <oxy:DateTimeAxis
+                    Name="dateAxis"
+                    Position="Bottom"
+                    StringFormat="MM/dd/yy"
+                    MajorGridlineColor="Black"
+                    MajorGridlineStyle="Solid"
+                    MinorGridlineColor="LightGray"
+                    MinorGridlineStyle="Dash"
+                    IntervalType="Weeks"/>
+                </oxy:Plot.Axes>
+            </oxy:Plot>
         </Border>
         <Border Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="1" BorderThickness="1" Margin="30,0,30,30" BorderBrush="Black" >
-            <oxy:PlotView Model="{Binding BarModel}" Grid.Row="3"  Grid.ColumnSpan="2" Margin="0,0,0,0"/>
+            <oxy:Plot BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.Row="2">
+                <oxy:BarSeries 
+                LabelPlacement="Inside"
+                ItemsSource="{Binding CurrentBreeds}"
+                ValueField="breedFreq"
+                FillColor="Black"
+                LabelFormatString="0:.00%"/>
+                <oxy:Plot.Axes>
+                    <oxy:CategoryAxis 
+                    Position="Left" 
+                    ItemsSource="{Binding CurrentBreeds}" 
+                    LabelField="breedLabel"/>
+                    <oxy:LinearAxis
+                    Position="Bottom"
+                    AbsoluteMinimum="0"
+                    MinimumPadding="0"/>
+                </oxy:Plot.Axes>
+            </oxy:Plot>
         </Border>
     </Grid>
 </Window>
